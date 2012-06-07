@@ -22,7 +22,8 @@ module ChoreStore
     ret = []
     ChoreStore.get.each_pair do |key, val|
       status = val[:status]
-      run_time = val[:run_time]
+      run_time = val[:start_time]
+      run_time = 0 if !run_time
       current_time = Time.now.to_i
       do_every = val[:do_every]
       grace_period = val[:grace_period]
@@ -32,10 +33,26 @@ module ChoreStore
 
       if status == :fail
         state = :red
-        notes << "Job failed"
+        if val[:error]
+          notes << val[:error]
+        else
+          notes << "FAILED!!!"
+        end
+        
       elsif status == :finish
-        state = :green
-        notes << "Finished"
+        finish_time = val[:finish_time]
+        finish_in = val[:finish_in]
+
+        if !finish_in
+          state = :green
+          notes << "no particular deadline"
+        elsif (run_time + finish_in) >= finish_time
+          state = :green
+          notes << "Finished"
+        else
+          state = :red
+          notes << "Finished, but #{finish_time - (run_time + finish_in)} seconds late!!!"
+        end
       elsif status == :start
         if do_every
           if run_time + do_every >= current_time
@@ -53,7 +70,7 @@ module ChoreStore
         end
       end
       
-      info = {:job => key, :state => state, :status => status, :run_time => run_time, :notes => notes}
+      info = {:job => key, :state => state, :status => status, :start_time => run_time, :notes => notes}
       yield info
 
     end
@@ -63,7 +80,7 @@ module ChoreStore
 
     status_lines = []
     iterate_statuses do |status|
-      status_line = "#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])}"
+      status_line = "#{status[:job]} - #{status[:status]}ed #{Time.at(status[:start_time])}"
       status_line += " (#{status[:notes].join(', ')})" if !status[:notes].empty?
       status_lines << colorize(status_line, status[:state])
     end
@@ -122,7 +139,7 @@ body {font-family:monospace;background-color:#CCCCCC;}
 html
 
     ChoreStore.iterate_statuses do |status|
-      row = "<tr><td class='#{status[:state]}'>#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])}"
+      row = "<tr><td class='#{status[:state]}'>#{status[:job]} - #{status[:status]}ed #{Time.at(status[:start_time])}"
       row += " (#{status[:notes].join(', ')})<tr><td>\n" if !status[:notes].empty?
       html << row 
     end

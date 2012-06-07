@@ -21,17 +21,18 @@ module Chore
   end
 
   def self.start task, opts={}
-    opts[:run_time] = Time.now().to_i
+    opts[:start_time] = Time.now().to_i
     send( [:start, task, opts] )
   end
 
-  def self.finish
-    opts[:run_time] = Time.now().to_i
+  def self.finish task, opts={}
+    opts[:finish_time] = Time.now().to_i
     send( [:finish, task, opts] )
   end
   
-  def self.fail
-    opts[:run_time] = Time.now().to_i
+  # :error => message
+  def self.fail task, opts={}
+    opts[:fail_time] = Time.now().to_i
     send( [:fail, task, opts] )
   end
   
@@ -41,3 +42,16 @@ Chore.start(:crazy_background_task, :do_every => 60, :grace_period => 2400)
 Chore.start(:random_resque_job, :do_every => 1200)
 Chore.start(:custom_script, :do_every => 2400)
 Chore.start(:logrotate, :do_every => 1)
+
+Chore.fail(:exceptional, :error => "Another freaking nil error")
+Chore.fail(:exceptionally_anonymous)
+
+Chore.start(:finish_anytime)
+Chore.finish(:finish_anytime)
+
+Chore.start(:slow, :finish_in => 20000000)
+Chore.finish(:slow)
+
+Chore.start(:quick, :finish_in => 1)
+sleep(5)
+Chore.finish(:quick)
