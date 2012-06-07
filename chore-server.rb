@@ -108,6 +108,7 @@ class ChoreWeb < EventMachine::Connection
 <html>
 <head>
 <style type="text/css">
+body {font-family:monospace;background-color:#CCCCCC;}
 .red {color:red;}
 .yellow {color:yellow;}
 .green {color:green;}
