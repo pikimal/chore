@@ -105,13 +105,11 @@ module ChoreCollect
     end
 
     ChoreStore.get[chore] = ChoreStore.get[chore].merge(opts)
-    puts ChoreStore.text_statuses
   end
 end
 
 module ChoreDisplay
   def receive_data(data)
-    puts "AAAAAA"
     send_data(ChoreStore.text_statuses)
     close_connection_after_writing
   end
@@ -131,16 +129,24 @@ body {font-family:monospace;background-color:#CCCCCC;}
 .red {color:red;}
 .yellow {color:yellow;}
 .green {color:green;}
+table, th, td { border: 1px solid black;}
 </style>
 </head>
 <body>
 <h1>Chores</h1>
 <table>
+<tr><th>Job</th><th>Status</th><th>Time</th><th>Notes</th></tr>
 html
 
     ChoreStore.iterate_statuses do |status|
-      row = "<tr><td class='#{status[:state]}'>#{status[:job]} - #{status[:status]}ed #{Time.at(status[:start_time])}"
-      row += " (#{status[:notes].join(', ')})<tr><td>\n" if !status[:notes].empty?
+      row = "<tr class='#{status[:state]}'><td>#{status[:job]}</td><td>#{status[:status]}ed</td><td>#{Time.at(status[:start_time])}</td>"
+      if !status[:notes].empty?
+        row += "<td>(#{status[:notes].join(', ')})</td>"
+      else
+        row += "<td>&nbsp;</td>"
+      end
+      
+      row += "</tr>\n"
       html << row 
     end
 
