@@ -63,7 +63,9 @@ module ChoreStore
 
     status_lines = []
     iterate_statuses do |status|
-      status_lines << colorize("#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])} (#{status[:notes].join(', ')})", status[:state])
+      status_line = "#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])}"
+      status_line += " (#{status[:notes].join(', ')})" if !status[:notes].empty?
+      status_lines << colorize(status_line, status[:state])
     end
     
     status_lines.join("\n") + "\n"
@@ -120,7 +122,9 @@ body {font-family:monospace;background-color:#CCCCCC;}
 html
 
     ChoreStore.iterate_statuses do |status|
-      html << "<tr><td class='#{status[:state]}'>#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])} (#{status[:notes].join(', ')})<tr><td>\n"
+      row = "<tr><td class='#{status[:state]}'>#{status[:job]} - #{status[:status]}ed #{Time.at(status[:run_time])}"
+      row += " (#{status[:notes].join(', ')})<tr><td>\n" if !status[:notes].empty?
+      html << row 
     end
 
     html << "</body></html>"
