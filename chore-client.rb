@@ -10,8 +10,11 @@ require 'socket'
 # finish is optional and only used if start includes :finish_in
 module Chore
 
+  @@server_ip = '127.0.0.1'
+  @@server_port = 7779
+
   def self.send msg
-    UDPSocket.new.send(sanitize(msg).to_s, 0, '127.0.0.1', 7779)
+    UDPSocket.new.send(sanitize(msg).to_s, 0, @@server_ip, @@server_port)
   end
 
   #only allow good options
@@ -19,6 +22,12 @@ module Chore
   def self.sanitize msg
     msg
   end
+
+  def self.set_server ip, port
+    @@server_ip = ip
+    @@server_port = port
+  end
+  
 
   def self.start task, opts={}
     opts[:start_time] = Time.now().to_i
