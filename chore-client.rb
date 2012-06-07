@@ -43,7 +43,10 @@ Chore.start(:random_resque_job, :do_every => 1200)
 Chore.start(:custom_script, :do_every => 2400)
 Chore.start(:logrotate, :do_every => 1)
 
+Chore.start(:exceptional)
 Chore.fail(:exceptional, :error => "Another freaking nil error")
+
+Chore.start(:exceptionally_anonymous)
 Chore.fail(:exceptionally_anonymous)
 
 Chore.start(:finish_anytime)
