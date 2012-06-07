@@ -21,17 +21,17 @@ module Chore
   end
 
   def self.start task, opts={}
-    opts[:time] = Time.now().to_i
+    opts[:run_time] = Time.now().to_i
     send( [:start, task, opts] )
   end
 
   def self.finish
-    opts[:now] = Time.now().to_i
+    opts[:run_time] = Time.now().to_i
     send( [:finish, task, opts] )
   end
   
   def self.fail
-    opts[:now] = Time.now().to_i
+    opts[:run_time] = Time.now().to_i
     send( [:fail, task, opts] )
   end
   
