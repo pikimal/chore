@@ -1,5 +1,6 @@
 require 'eventmachine'
 require 'evma_httpserver'
+require 'json'
 
 module ChoreStore
   @@store = {}
@@ -21,29 +22,31 @@ module ChoreStore
   def self.iterate_statuses
     ret = []
     ChoreStore.get.each_pair do |key, val|
-      status = val[:status]
-      run_time = val[:start_time]
+      puts val.inspect
+      status = val['status'].to_sym
+      run_time = val['start_time']
       run_time = 0 if !run_time
+
       current_time = Time.now.to_i
-      do_every = val[:do_every]
-      grace_period = val[:grace_period]
+      do_every = val['do_every']
+      grace_period = val['grace_period']
 
       notes = []
       state = :red
 
       if status == :fail
         state = :red
-        if val[:error]
-          notes << val[:error]
+        if val['error']
+          notes << val['error']
         else
           notes << "FAILED!!!"
         end
         
       elsif status == :finish
-        finish_time = val[:finish_time]
-        finish_in = val[:finish_in]
+        finish_time = val['finish_time']
+        finish_in = val['finish_in']
 
-        if !finish_in
+        if finish_in.nil?
           state = :green
           notes << "no particular deadline"
         elsif (run_time + finish_in) >= finish_time
@@ -94,7 +97,7 @@ module ChoreStore
     start_or_finish = chore_info[0]
     chore = chore_info[1]
     opts = chore_info[2]
-    opts[:status] = start_or_finish
+    opts['status'] = start_or_finish
     
     if ChoreStore.get[chore].nil?
       ChoreStore.get[chore] = {}
@@ -113,7 +116,7 @@ end
 
 module ChoreCollect
   def receive_data(data)
-    chore_info = eval(data)
+    chore_info = JSON.parse(data)
     ChoreStore.collect chore_info
   end
 end

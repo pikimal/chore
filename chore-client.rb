@@ -1,4 +1,5 @@
 require 'socket'
+require 'json'
 
 #
 # Usage:
@@ -20,7 +21,7 @@ module Chore
   #only allow good options
 
   def self.sanitize msg
-    msg
+    msg.to_json
   end
 
   def self.set_server ip, port
