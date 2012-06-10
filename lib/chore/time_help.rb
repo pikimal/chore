@@ -1,5 +1,5 @@
 module Chore
-  module Time
+  module TimeHelp
     def self.elapsed_human_time seconds
       remaining_ticks = seconds
       human_text = ""

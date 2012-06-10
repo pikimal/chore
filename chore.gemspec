@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.description = "Monitor chorse"
   s.authors = ["Grant Olson"]
   s.email = "grant@pikimal.com"
-  s.files = ['lib/chore.rb', 'lib/chore/server.rb','lib/chore/time.rb']
+  s.files = ['lib/chore.rb', 'lib/chore/server.rb','lib/chore/time_help.rb', 'lib/chore/store.rb']
   s.executables << 'chore-server'
   s.executables << 'chore-client-test'
 end
