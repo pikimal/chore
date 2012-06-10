@@ -39,7 +39,6 @@ module Chore
     def self.iterate_statuses
       ret = []
       Store.get.each_pair do |key, val|
-        puts val.inspect
         status = val['status'].to_sym
         run_time = val['start_time']
         run_time = 0 if !run_time
