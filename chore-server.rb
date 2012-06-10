@@ -88,13 +88,9 @@ module ChoreStore
     status_lines.join("\n") + "\n"
   end
   
-end
-
-
-module ChoreCollect
-
-  def receive_data(data)
-    chore_info = eval(data)
+  #
+  # Process data with a spawned process in the background 
+  @@data_collector = EM.spawn do |chore_info|
     start_or_finish = chore_info[0]
     chore = chore_info[1]
     opts = chore_info[2]
@@ -105,6 +101,20 @@ module ChoreCollect
     end
 
     ChoreStore.get[chore] = ChoreStore.get[chore].merge(opts)
+    
+  end
+
+  def self.collect chore_info
+    @@data_collector.notify chore_info
+  end
+
+end
+
+
+module ChoreCollect
+  def receive_data(data)
+    chore_info = eval(data)
+    ChoreStore.collect chore_info
   end
 end
 
