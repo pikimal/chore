@@ -1,6 +1,7 @@
 require 'eventmachine'
 require 'evma_httpserver'
 require 'json'
+require './chore_time'
 
 module ChoreStore
   @@store = {}
@@ -60,12 +61,13 @@ module ChoreStore
         if do_every
           if run_time + do_every >= current_time
             state = :green
+            notes << "Should run every #{ChoreTime.elapsed_human_time(do_every)}"
           elsif grace_period && run_time + do_every + grace_period > current_time
             state = :yellow
-            notes << "Job should run every #{do_every} seconds, but has a grace period of #{grace_period} seconds"
+            notes << "Job should run every #{ChoreTime.elapsed_human_time(do_every)}, but has a grace period of #{ChoreTime.elapsed_human_time(grace_period)}"
           else
             state = :red
-            notes << "Job should run every #{do_every} seconds, but hasn't run since #{run_time}"
+            notes << "Job should run every #{ChoreTime.elapsed_human_time(do_every)}, but hasn't run since #{Time.at(run_time)}"
           end
         else
           state = :green

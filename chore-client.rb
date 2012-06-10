@@ -50,7 +50,7 @@ end
 
 Chore.start(:crazy_background_task, :do_every => 60, :grace_period => 2400)
 Chore.start(:random_resque_job, :do_every => 1200)
-Chore.start(:custom_script, :do_every => 2400)
+Chore.start(:custom_script, :do_every => 3600)
 Chore.start(:logrotate, :do_every => 1)
 
 Chore.start(:exceptional)
