@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+require 'socket'
+
+#Obviously we need some flags soon.
+sock = TCPSocket.open('localhost', 8888)
+sock.puts ".\r\n"
+
+
+while next_line = sock.gets
+  puts next_line
+end
+
+sock.close  
