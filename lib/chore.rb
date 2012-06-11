@@ -51,6 +51,7 @@ module Chore
       Chore.finish(task)
     rescue Exception => ex
       Chore.fail(task, :error => "#{ex.class} - #{ex.message}")
+      raise
     end
   end
   
