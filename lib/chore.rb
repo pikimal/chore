@@ -19,7 +19,6 @@ module Chore
   end
 
   #only allow good options
-
   def self.sanitize msg
     msg.to_json
   end
@@ -29,7 +28,6 @@ module Chore
     @@server_port = port
   end
   
-
   def self.start task, opts={}
     opts[:start_time] = Time.now().to_i
     send( [:start, task, opts] )
@@ -46,4 +44,15 @@ module Chore
     send( [:fail, task, opts] )
   end
   
+  def self.monitor task, opts={}, &code
+    Chore.start(task, opts)
+    begin
+      code.call()
+      Chore.finish(task)
+    rescue Exception => ex
+      Chore.fail(task, :error => "#{ex.class} - #{ex.message}")
+    end
+  end
+  
+
 end

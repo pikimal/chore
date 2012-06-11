@@ -22,3 +22,11 @@ Chore.finish(:slow)
 Chore.start(:quick, :finish_in => 1)
 sleep(5)
 Chore.finish(:quick)
+
+Chore.monitor("good task") do
+  puts "Good"
+end
+
+Chore.monitor("bad task") do
+  raise "AAAAAAAAAAAAAAAAAAAAA"
+end
