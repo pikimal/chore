@@ -39,7 +39,7 @@ To view status from the command line:
 
 Which will produce output like:
 
-<code>
+<pre>
 <span style='color:yellow;'>crazy_background_task - started 2012-06-11 17:11:16 -0400 (Job should run every 1 minute, but has a grace period of 40 minutes)</span>
 <span style='color:green;'>random_resque_job - started 2012-06-11 17:11:16 -0400 (Should run every 20 minutes)</span>
 <span style='color:green;'>custom_script - started 2012-06-11 17:11:16 -0400 (Should run every 1 hour)</span>
@@ -51,7 +51,7 @@ Which will produce output like:
 <span style='color:red;'>quick - finished 2012-06-11 17:11:16 -0400 (Finished, but 4 seconds late!!!)</span>
 <span style='color:green'>good task - finished 2012-06-11 17:11:21 -0400 (no particular deadline)</span>
 <span style='color:red;'bad task - failed 2012-06-11 17:11:21 -0400 (RuntimeError - AAAAAAAAAAAAAAAAAAAAA)</span>
-<code>
+</pre>
 
 To view status from a web-server:
 
