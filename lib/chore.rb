@@ -1,5 +1,6 @@
 require 'socket'
 require 'json'
+require 'chore/constants'
 
 #
 # Usage:
@@ -12,7 +13,7 @@ require 'json'
 module Chore
 
   @@server_ip = '127.0.0.1'
-  @@server_port = 7779
+  @@server_port = Chore::Constants::DEFAULT_LISTEN_PORT
 
   def self.send msg
     UDPSocket.new.send(sanitize(msg).to_s, 0, @@server_ip, @@server_port)

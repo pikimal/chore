@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
 require 'socket'
+require 'chore/constants'
 
 server = 'localhost'
-port = 8888
+port = Chore::Constants::DEFAULT_CLI_PORT
 
 server = ARGV[0] if ARGV[0]
 port = ARGV[1].to_i if ARGV[1]

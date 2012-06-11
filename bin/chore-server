@@ -2,9 +2,10 @@
 
 require 'chore'
 require 'chore/server'
+require 'chore/constants'
 
 EventMachine::run do
-  EventMachine::open_datagram_socket('0.0.0.0', 7779, ChoreCollect)
-  EventMachine::start_server('0.0.0.0', 8888, ChoreDisplay)
-  EventMachine::start_server('0.0.0.0', 8899, ChoreWeb)
+  EventMachine::open_datagram_socket('0.0.0.0', Chore::Constants::DEFAULT_LISTEN_PORT, ChoreCollect)
+  EventMachine::start_server('0.0.0.0', Chore::Constants::DEFAULT_CLI_PORT, ChoreDisplay)
+  EventMachine::start_server('0.0.0.0', Chore::Constants::DEFAULT_WEB_PORT, ChoreWeb)
 end
