@@ -10,4 +10,6 @@ Gem::Specification.new do |s|
   s.executables << 'chore-server'
   s.executables << 'chore-client-test'
   s.executables << 'chore-status'
+  s.add_dependency('eventmachine','>= 0.2.10')
+  s.add_dependency('eventmachine_httpserver', '>= 0.2.1')
 end
