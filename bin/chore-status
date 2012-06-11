@@ -2,13 +2,21 @@
 
 require 'socket'
 
-#Obviously we need some flags soon.
-sock = TCPSocket.open('localhost', 8888)
-sock.puts ".\r\n"
+server = 'localhost'
+port = 8888
 
+server = ARGV[0] if ARGV[0]
+port = ARGV[1].to_i if ARGV[1]
 
-while next_line = sock.gets
-  puts next_line
+begin
+  sock = TCPSocket.open(server,port)
+  sock.puts ".\r\n"
+
+  while next_line = sock.gets
+    puts next_line
+  end
+
+  sock.close
+rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT => ex
+  puts "Couldn't connect to chore-server at #{server}:#{port}"
 end
-
-sock.close  
