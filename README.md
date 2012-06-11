@@ -39,19 +39,19 @@ To view status from the command line:
 
 Which will produce output like:
 
-<pre>
-<span style='color:yellow;'>crazy_background_task - started 2012-06-11 17:11:16 -0400 (Job should run every 1 minute, but has a grace period of 40 minutes)</span>
-<span style='color:green;'>random_resque_job - started 2012-06-11 17:11:16 -0400 (Should run every 20 minutes)</span>
-<span style='color:green;'>custom_script - started 2012-06-11 17:11:16 -0400 (Should run every 1 hour)</span>
-<span style='color:red;'>logrotate - started 2012-06-11 17:11:16 -0400 (Job should run every 1 second, but hasn't run since 2012-06-11 17:11:16 -0400)</span>
-<span style='color:red;'>exceptional - failed 2012-06-11 17:11:16 -0400 (Another freaking nil error)</span>
-<span style='color:red;'>exceptionally_anonymous - failed 2012-06-11 17:11:16 -0400 (FAILED!!!)</span>
-<span style='color:green;'>finish_anytime - finished 2012-06-11 17:11:16 -0400 (no particular deadline)</span>
-<span style='color:green;'>slow - finished 2012-06-11 17:11:16 -0400 (Finished)</span>
-<span style='color:red;'>quick - finished 2012-06-11 17:11:16 -0400 (Finished, but 4 seconds late!!!)</span>
-<span style='color:green'>good task - finished 2012-06-11 17:11:21 -0400 (no particular deadline)</span>
-<span style='color:red;'bad task - failed 2012-06-11 17:11:21 -0400 (RuntimeError - AAAAAAAAAAAAAAAAAAAAA)</span>
-</pre>
+    crazy_background_task - started 2012-06-11 17:11:16 -0400 (Job should run every 1 minute, but has a grace period of 40 minutes)
+    random_resque_job - started 2012-06-11 17:11:16 -0400 (Should run every 20 minutes)
+    custom_script - started 2012-06-11 17:11:16 -0400 (Should run every 1 hour)
+    logrotate - started 2012-06-11 17:11:16 -0400 (Job should run every 1 second, but hasn't run since 2012-06-11 17:11:16 -0400)
+    exceptional - failed 2012-06-11 17:11:16 -0400 (Another freaking nil error)
+    exceptionally_anonymous - failed 2012-06-11 17:11:16 -0400 (FAILED!!!)
+    finish_anytime - finished 2012-06-11 17:11:16 -0400 (no particular deadline)
+    slow - finished 2012-06-11 17:11:16 -0400 (Finished)
+    quick - finished 2012-06-11 17:11:16 -0400 (Finished, but 4 seconds late!!!)
+    good task - finished 2012-06-11 17:11:21 -0400 (no particular deadline)
+    bad task - failed 2012-06-11 17:11:21 -0400 (RuntimeError - AAAAAAAAAAAAAAAAAAAAA)
+
+(Todo, how do we show the colors in github)
 
 To view status from a web-server:
 
@@ -59,39 +59,44 @@ To view status from a web-server:
 
 To record a chore in ruby:
 
-    Chore.monitor(:task_name) do
-      # real work
-    end
+```ruby
+Chore.monitor(:task_name) do
+  # real work
+end
+```
 
 This will record the start and finish of the wrapped block.
 
 Even simpler, you can just record the start of a task:
 
-    Chore.start(:task_name)
-    #do stuff
+```ruby
+Chore.start(:task_name)
+#do stuff
+```
 
 This still requires you to examine timestamps to see if things are
 running.  If you want a better visual clue that things are broken, you
 can throw in some options.  (All .start options can also be passed
 into .monitor)
 
-    # complain if the task hasn't run in more than an hour.
-    Chore.start(:task_name, :do_every => 3600)
+```ruby
+# complain if the task hasn't run in more than an hour.
+Chore.start(:task_name, :do_every => 3600)
     
-    # complain if the task hasn't run in more than an hour, and
-    # complain more loudly if it hasn't run in two.
-    Chore.start(:task_name, :do_every => 3600, :grace_period => 3600)
+# complain if the task hasn't run in more than an hour, and
+# complain more loudly if it hasn't run in two.
+Chore.start(:task_name, :do_every => 3600, :grace_period => 3600)
     
-    # complain if the task hasn't finished in an hour.
-    Chore.start(:task_name, :finish_in => 3600)
-    # make sure to call Chore.finish(:task_name) explicitly later, 
-    # or use Chore.monitor to do so automatically.    
+# complain if the task hasn't finished in an hour.
+Chore.start(:task_name, :finish_in => 3600)
+# make sure to call Chore.finish(:task_name) explicitly later, 
+# or use Chore.monitor to do so automatically.    
 
-    # Record error info for known exception
-    begin
-      Chore.start(:goofy_task)
-      raise Errno::ETIMEDOUT # network problems
-    rescue Errno::ETIMEDOUT => ex
-      Chore.fail(:goofy_task, :error => "Crappy router probably needs a reboot."
-    end
-
+# Record error info for known exception
+begin
+  Chore.start(:goofy_task)
+  raise Errno::ETIMEDOUT # network problems
+rescue Errno::ETIMEDOUT => ex
+  Chore.fail(:goofy_task, :error => "Crappy router probably needs a reboot."
+end
+```
