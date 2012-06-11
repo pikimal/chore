@@ -34,6 +34,10 @@ module Chore
     send( [:start, task, opts] )
   end
 
+  def self.status task, message
+    send( [:status_update, task, { :status_note => message}] )
+  end
+
   def self.finish task, opts={}
     opts[:finish_time] = Time.now().to_i
     send( [:finish, task, opts] )

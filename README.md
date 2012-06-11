@@ -99,4 +99,13 @@ begin
 rescue Errno::ETIMEDOUT => ex
   Chore.fail(:goofy_task, :error => "Crappy router probably needs a reboot."
 end
+
+# Add status notes, only the last update shows.
+Chore.start(:long_task)
+# ...
+Chore.status(:long_task, "Downloaded the interwebz")
+# ...
+Chore.status(:long_task, "Ran bayesian classifier")
+# ...
+
 ```

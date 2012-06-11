@@ -72,7 +72,7 @@ module Chore
             state = :red
             notes << "Finished, but #{finish_time - (run_time + finish_in)} seconds late!!!"
           end
-        elsif status == :start
+        elsif status == :start || status == :status_update
           if do_every
             if run_time + do_every >= current_time
               state = :green
@@ -88,6 +88,8 @@ module Chore
             state = :green
             notes << "No regular schedule."
           end
+
+          notes << "Status: #{val['status_note']}" if val['status_note']
         end
         
         info = {:job => key, :state => state, :status => status, :start_time => run_time, :notes => notes}

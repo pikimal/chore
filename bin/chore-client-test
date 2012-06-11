@@ -27,6 +27,12 @@ Chore.monitor("good task") do
   puts "Good"
 end
 
+Chore.start(:updating_task)
+Chore.status(:updating_task, "Step one complete")
+Chore.status(:updating_task, "Step two complete")
+Chore.status(:updating_task, "Step three complete")
+
+
 Chore.monitor("bad task") do
   raise "AAAAAAAAAAAAAAAAAAAAA"
 end
