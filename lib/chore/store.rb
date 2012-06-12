@@ -38,6 +38,32 @@ module Chore
     end
 
     #
+    # :section: expire
+    #
+
+    # if we have an expiration setting, expire anything thats after
+    # the expiration date.
+    def self.expire
+      expired_tasks = []
+      
+      Chore::Store.get.each_pair do |task, params|
+        if params['expire_in']
+          start_time = params['start_time'].to_i
+          expire_in = params['expire_in'].to_i
+          expire_time = start_time + expire_in
+          
+          if expire_time < Time.now().to_i
+            expired_tasks << task
+          end
+        end
+      end
+
+      expired_tasks.each do |task|
+        Chore::Store.get.delete(task)
+      end
+    end
+
+    #
     # :section: read info
     #
     def self.iterate_statuses
@@ -91,6 +117,11 @@ module Chore
           else
             state = :green
             notes << "No regular schedule."
+          end
+
+          if val['expire_in']
+            expire_in = Time.at(val['start_time'] + val['expire_in'].to_i)
+            notes << "Will expire in #{expire_in}"
           end
 
           notes << "Status: #{val['status_note']}" if val['status_note']

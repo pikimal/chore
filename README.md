@@ -64,6 +64,10 @@ To view status from a web-server:
 To record a chore in ruby:
 
 ```ruby
+
+# one time config, not needed if server is on localhost
+Chore.set_server('hostname',Chore::Constants::DEFAULT_LISTEN_PORT)
+
 Chore.monitor(:task_name) do
   # real work
 end
@@ -116,5 +120,10 @@ Chore.status(:long_task, "Ran bayesian classifier")
 Chore.monitor("update widget #{widget.id}", :pop => true) do
   # ...
 end
+
+# Expire an entry in X seconds, whether it's started, finished or
+# failed, so that it no longer shows up in output.  Useful when
+# attaching an id number or pid to the task name.
+Chore.monitor("Cron task with pid #{process_id}", :expire_in => 1.day) {}
 
 ```
