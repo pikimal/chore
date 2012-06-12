@@ -94,10 +94,8 @@ module Chore
 
           if finish_in.nil?
             state = :green
-            notes << "no particular deadline"
           elsif (run_time + finish_in) >= finish_time
             state = :green
-            notes << "Finished"
           else
             state = :red
             notes << "Finished, but #{finish_time - (run_time + finish_in)} seconds late!!!"
@@ -116,7 +114,6 @@ module Chore
             end
           else
             state = :green
-            notes << "No regular schedule."
           end
 
           if val['expire_in']
