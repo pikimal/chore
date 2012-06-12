@@ -2,6 +2,14 @@
 
 require 'chore'
 
+#TODO: Do this right
+server_name = 'localhost'
+server_port = Chore::Constants::DEFAULT_LISTEN_PORT
+server_name = ARGV[0] if ARGV[0]
+server_port = ARGV[1].to_i if ARGV[1]
+
+Chore.set_server(server_name,server_port)
+
 Chore.start(:crazy_background_task, :do_every => 60, :grace_period => 2400)
 Chore.start(:random_resque_job, :do_every => 1200)
 Chore.start(:custom_script, :do_every => 3600)

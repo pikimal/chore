@@ -4,8 +4,18 @@ require 'chore'
 require 'chore/server'
 require 'chore/constants'
 
+
+# TODO: Real command line options instead of this
+listen_port = Chore::Constants::DEFAULT_LISTEN_PORT
+cli_port = Chore::Constants::DEFAULT_CLI_PORT
+web_port = Chore::Constants::DEFAULT_WEB_PORT
+
+listen_port = ARGV[0].to_i if ARGV[0]
+cli_port = ARGV[1].to_i if ARGV[1]
+web_port = ARGV[2].to_i if ARGV[2]
+
 EventMachine::run do
-  EventMachine::open_datagram_socket('0.0.0.0', Chore::Constants::DEFAULT_LISTEN_PORT, ChoreCollect)
-  EventMachine::start_server('0.0.0.0', Chore::Constants::DEFAULT_CLI_PORT, ChoreDisplay)
-  EventMachine::start_server('0.0.0.0', Chore::Constants::DEFAULT_WEB_PORT, ChoreWeb)
+  EventMachine::open_datagram_socket('0.0.0.0', listen_port, ChoreCollect)
+  EventMachine::start_server('0.0.0.0', cli_port, ChoreDisplay)
+  EventMachine::start_server('0.0.0.0', web_port, ChoreWeb)
 end
