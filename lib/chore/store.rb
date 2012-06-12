@@ -129,32 +129,5 @@ module Chore
 
       end
     end
-
-
-    #
-    # :section: Display functions
-    #
-    def self.colorize str, color
-      color_code = case color
-                   when :red then 31
-                   when :green then 32
-                   when :yellow then 33
-                   else raise "BAD COLOR #{str} #{color}"
-                   end
-      "\033[#{color_code}m#{str}\033[0m"
-    end
-
-    def self.text_statuses
-
-      status_lines = []
-      iterate_statuses do |status|
-        status_line = "#{status[:job]} - #{status[:status]}ed #{Time.at(status[:start_time])}"
-        status_line += " (#{status[:notes].join(', ')})" if !status[:notes].empty?
-        status_lines << colorize(status_line, status[:state])
-      end
-      
-      status_lines.join("\n") + "\n"
-    end
-    
   end
 end
