@@ -17,6 +17,7 @@ module Chore
 
   def self.send msg
     UDPSocket.new.send(sanitize(msg).to_s, 0, @@server_ip, @@server_port)
+    nil
   end
 
   #only allow good options
