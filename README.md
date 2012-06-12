@@ -1,31 +1,35 @@
 Chore
 =====
 
-Chore is a system health monitoring tool aimed at developers.
+Chore is a system health monitoring tool for everyone.
 
-It tries to provide a simple centralized interface to monitor all
-various 'chores' (regular jobs, asyncronous background jobs, etc) so
-you can see if you system is up-to-date.
+There are more sophisticated tools, tools with better disaster
+recovery, tools that monitor CPU/Swap/Disk-space, to be sure.  But
+these usually require switching gears from your main codebase, an
+advanced learning curve, and often find themselves used only by a
+dedicated systems person or a single resident expert on your team.
 
-Basically the problem we were running into was that there we had
-health tools, but too many.  Many are configured at the sysops level,
-giving useful information about disk space and CPU usage, but this
-didn't tell us much about the actual health of our running
-application.  Things were AOK according to all the tools, but our data
-was actually stale.
-
-Other tools could probably give us the information we need and fix
-things automatically, but the learning curve was a bit much for
-someone who isn't focused on sysops.
+Chore provides a simple API that anyone can start using in 5 minutes
+or less.  This allows any developer to add their own monitoring to
+tasks with little to no effort.
 
 Chore provides a simple ruby interface to indicate:
 
-*   When a job is started.  (Is it actually running?)
+*   When a task is started.  (Is it actually running?)
 
 *   Optionally when it finished and/or errored.  (Is it completing?)
 
 *   Optionally parameters such as how frequently the job should run
     and/or how long it should take.  (Is it behaving as expected?)
+
+Chore does not:
+
+*   Perform automated recovery of failed tasks.
+
+*   Kill or restart zombie processes.
+
+*   Provide server health info such as high CPU usage, low disk space,
+    excessive swapping, etc.
 
 To start a server:
 
