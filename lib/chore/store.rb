@@ -21,7 +21,6 @@ module Chore
       opts = chore_info[2]
       opts['status'] = state
       
-      puts state.inspect
       if state == "pop"
         Store.get.delete(chore)
       else
