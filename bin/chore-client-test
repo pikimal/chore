@@ -52,6 +52,10 @@ Chore.start(:expire_now, :expire_in => 0) {}
 Chore.start(:expire_in_one_minute, :expire_in => 60) {}
 Chore.start(:expire_in_a_while, :expire_in => 1000000000) {}
 
-Chore.monitor("bad task") do
-  raise "AAAAAAAAAAAAAAAAAAAAA"
+begin
+  Chore.monitor("bad task") do
+    raise "AAAAAAAAAAAAAAAAAAAAA"
+  end
+rescue Exception => ex
+  # don't spit out error
 end
