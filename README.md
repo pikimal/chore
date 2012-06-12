@@ -108,4 +108,9 @@ Chore.status(:long_task, "Downloaded the interwebz")
 Chore.status(:long_task, "Ran bayesian classifier")
 # ...
 
+# Remove a task from the store on completion, but not if it fails
+Chore.monitor("update widget #{widget.id}", :pop => true) do
+  # ...
+end
+
 ```
