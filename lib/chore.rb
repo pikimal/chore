@@ -44,17 +44,30 @@ module Chore
     send( [:finish, task, opts] )
   end
   
+  def self.pop task, opts={}
+    send( [:pop, task, opts] )
+  end
+
   # :error => message
   def self.fail task, opts={}
     opts[:fail_time] = Time.now().to_i
     send( [:fail, task, opts] )
   end
   
+  # In addition to normal opts, :pop => true
+  # will automatically remove the task from the store
   def self.monitor task, opts={}, &code
+    pop = false
+    if opts[:pop]
+      pop = true
+      opts.delete(:pop)
+    end
+    
     Chore.start(task, opts)
     begin
       code.call()
       Chore.finish(task)
+      Chore.pop(task) if pop
     rescue Exception => ex
       Chore.fail(task, :error => "#{ex.class} - #{ex.message}")
       raise

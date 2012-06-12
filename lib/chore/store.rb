@@ -16,16 +16,21 @@ module Chore
     #
 
     @@data_collector = EM.spawn do |chore_info|
-      start_or_finish = chore_info[0]
+      state = chore_info[0]
       chore = chore_info[1]
       opts = chore_info[2]
-      opts['status'] = start_or_finish
+      opts['status'] = state
       
-      if Store.get[chore].nil?
-        Store.get[chore] = {}
-      end
+      puts state.inspect
+      if state == "pop"
+        Store.get.delete(chore)
+      else
+        if Store.get[chore].nil?
+          Store.get[chore] = {}
+        end
 
-      Store.get[chore] = Store.get[chore].merge(opts)
+        Store.get[chore] = Store.get[chore].merge(opts)
+      end
       
     end
 

@@ -40,6 +40,13 @@ Chore.status(:updating_task, "Step one complete")
 Chore.status(:updating_task, "Step two complete")
 Chore.status(:updating_task, "Step three complete")
 
+Chore.start(:pop_it)
+Chore.finish(:pop_it)
+Chore.pop(:pop_it)
+
+Chore.monitor(:auto_pop, :pop => true) {} # should not show up
+
+Chore.monitor(:no_pop) {} # should show up
 
 Chore.monitor("bad task") do
   raise "AAAAAAAAAAAAAAAAAAAAA"
