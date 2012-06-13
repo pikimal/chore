@@ -1,5 +1,7 @@
 module Chore
   module TimeHelp
+    # Show stuff like "7 weeks, 3 days, 4 hours" instead of 
+    # 13252363477 seconds since epoch
     def self.elapsed_human_time seconds
       remaining_ticks = seconds
       human_text = ""
@@ -16,7 +18,7 @@ module Chore
         remaining_ticks = above
         if above == 0
           break
-        end
+          end
       end
       human_text.strip
     end

@@ -4,6 +4,7 @@ require 'chore/store'
 require 'json'
 
 
+# Process submissions from a client and save it in the store.
 module ChoreCollect
   def receive_data(data)
     chore_info = JSON.parse(data)
@@ -11,6 +12,7 @@ module ChoreCollect
   end
 end
 
+# Provide colorized text output for the CLI interface.
 module ChoreDisplay
     def colorize str, color
       color_code = case color
@@ -41,6 +43,8 @@ module ChoreDisplay
   end
 end
 
+# A basic webserver that provides a single web page with chore
+# statues
 class ChoreWeb < EventMachine::Connection
   include EventMachine::HttpServer
 

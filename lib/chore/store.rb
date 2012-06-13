@@ -5,12 +5,6 @@ module Chore
   # A semi-persistant store for all of our chore data.  Right now
   # it's just a hash that won't survive a server restart.
   module Store
-    @@store = {}
-
-    def self.get
-      @@store
-    end
-
     #
     # Process data with a spawned process in the background 
     #
@@ -33,16 +27,13 @@ module Chore
       
     end
 
+    # Sends data to the data_collector spawned process to add
+    # to the data store.
     def self.collect chore_info
       @@data_collector.notify chore_info
     end
 
-    #
-    # :section: expire
-    #
-
-    # if we have an expiration setting, expire anything thats after
-    # the expiration date.
+    # Remove anything that's currently expired from the store.
     def self.expire
       expired_tasks = []
       
@@ -63,9 +54,8 @@ module Chore
       end
     end
 
-    #
-    # :section: read info
-    #
+    # Climb through the internal store and return a processed and
+    # abstracted list of tasks to the consumer.
     def self.iterate_statuses
       ret = []
       Store.get.each_pair do |key, val|
@@ -128,6 +118,13 @@ module Chore
         yield info
 
       end
+    end
+
+  private
+    @@store = {}
+
+    def self.get
+      @@store
     end
   end
 end
