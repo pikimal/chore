@@ -82,8 +82,11 @@ module Chore
     Chore.start(task, opts)
     begin
       code.call()
-      Chore.finish(task)
-      Chore.pop(task) if pop
+      if pop
+        Chore.pop(task)
+      else
+        Chore.finish(task)
+      end
     rescue Exception => ex
       Chore.fail(task, :error => "#{ex.class} - #{ex.message}")
       raise
