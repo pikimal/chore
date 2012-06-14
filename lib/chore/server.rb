@@ -3,12 +3,21 @@ require 'evma_httpserver'
 require 'chore/store'
 require 'json'
 
-
 # Process submissions from a client and save it in the store.
 module ChoreCollect
+  @@data_collector = EM.spawn do |chore_info|
+    Chore::Store.update_chore(chore_info)
+  end
+
+  # Sends data to the data_collector spawned process to add
+  # to the data store.
+  def chore_collect chore_info
+    @@data_collector.notify chore_info
+  end
+
   def receive_data(data)
     chore_info = JSON.parse(data)
-    Chore::Store.collect chore_info
+    chore_collect chore_info
   end
 end
 

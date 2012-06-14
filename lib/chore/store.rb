@@ -9,7 +9,7 @@ module Chore
     # Process data with a spawned process in the background 
     #
 
-    @@data_collector = EM.spawn do |chore_info|
+    def self.update_chore chore_info
       state = chore_info[0]
       chore = chore_info[1]
       opts = chore_info[2]
@@ -24,13 +24,6 @@ module Chore
 
         Store.get[chore] = Store.get[chore].merge(opts)
       end
-      
-    end
-
-    # Sends data to the data_collector spawned process to add
-    # to the data store.
-    def self.collect chore_info
-      @@data_collector.notify chore_info
     end
 
     # Remove anything that's currently expired from the store.
@@ -55,7 +48,7 @@ module Chore
     end
 
     # get status of a single chore
-    def self.get_chore_status chore_name
+    def self.get_chore chore_name
       build_status(chore_name, Store.get[chore_name])
     end
 
@@ -63,8 +56,8 @@ module Chore
     # abstracted list of tasks to the consumer.
     def self.iterate_statuses
       ret = []
-      Store.get.each_pair do |key, val|
-        yield build_status(key, val)
+      Store.get.keys.each do |chore_name|
+        yield get_chore(chore_name)
       end
     end
 
