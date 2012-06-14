@@ -10,35 +10,9 @@ server_port = ARGV[1].to_i if ARGV[1]
 
 Chore.set_server(server_name,server_port)
 
-Chore.start(:crazy_background_task, :do_every => 60, :grace_period => 2400)
-Chore.start(:random_resque_job, :do_every => 1200)
-Chore.start(:custom_script, :do_every => 3600)
-Chore.start(:logrotate, :do_every => 1)
-
-Chore.start(:exceptional)
-Chore.fail(:exceptional, :error => "Another freaking nil error")
-
-Chore.start(:exceptionally_anonymous)
-Chore.fail(:exceptionally_anonymous)
-
-Chore.start(:finish_anytime)
-Chore.finish(:finish_anytime)
-
-Chore.start(:slow, :finish_in => 20000000)
-Chore.finish(:slow)
-
-Chore.start(:quick, :finish_in => 1)
-sleep(5)
-Chore.finish(:quick)
-
 Chore.monitor("good task") do
   puts "Good"
 end
-
-Chore.start(:updating_task)
-Chore.status(:updating_task, "Step one complete")
-Chore.status(:updating_task, "Step two complete")
-Chore.status(:updating_task, "Step three complete")
 
 Chore.start(:pop_it)
 Chore.finish(:pop_it)
