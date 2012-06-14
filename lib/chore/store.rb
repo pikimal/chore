@@ -54,33 +54,50 @@ module Chore
       end
     end
 
+    # get status of a single chore
+    def self.get_chore_status chore_name
+      build_status(chore_name, Store.get[chore_name])
+    end
+
     # Climb through the internal store and return a processed and
     # abstracted list of tasks to the consumer.
     def self.iterate_statuses
       ret = []
       Store.get.each_pair do |key, val|
-        status = val['status'].to_sym
-        run_time = val['start_time']
+        yield build_status(key, val)
+      end
+    end
+
+  private
+    @@store = {}
+
+    def self.get
+      @@store
+    end
+
+    def self.build_status chore_name, status_info
+        status = status_info['status'].to_sym
+        run_time = status_info['start_time']
         run_time = 0 if !run_time
 
         current_time = Time.now.to_i
-        do_every = val['do_every']
-        grace_period = val['grace_period']
+        do_every = status_info['do_every']
+        grace_period = status_info['grace_period']
 
         notes = []
         state = :red
 
         if status == :fail
           state = :red
-          if val['error']
-            notes << val['error']
+          if status_info['error']
+            notes << status_info['error']
           else
             notes << "FAILED!!!"
           end
           
         elsif status == :finish
-          finish_time = val['finish_time']
-          finish_in = val['finish_in']
+          finish_time = status_info['finish_time']
+          finish_in = status_info['finish_in']
 
           if finish_in.nil?
             state = :green
@@ -106,25 +123,17 @@ module Chore
             state = :green
           end
 
-          if val['expire_in']
-            expire_in = Time.at(val['start_time'] + val['expire_in'].to_i)
+          if status_info['expire_in']
+            expire_in = Time.at(status_info['start_time'] + status_info['expire_in'].to_i)
             notes << "Will expire in #{expire_in}"
           end
 
-          notes << "Status: #{val['status_note']}" if val['status_note']
+          notes << "Status: #{status_info['status_note']}" if status_info['status_note']
         end
         
-        info = {:job => key, :state => state, :status => status, :start_time => run_time, :notes => notes}
-        yield info
-
-      end
+        info = {:job => chore_name, :state => state, :status => status, :start_time => run_time, :notes => notes}
     end
 
-  private
-    @@store = {}
 
-    def self.get
-      @@store
-    end
   end
 end
