@@ -116,4 +116,60 @@ describe Chore::Store do
       chore[:state].should == :red
     end
   end
+
+  context "expiration" do
+    it "monitor with pop should work" do
+      Chore.monitor(:popped_task, :pop => true) {}
+      Chore::Store.get_chore(:popped_task).should be_nil
+    end
+    
+    it "monitor without pop should work" do
+      Chore.monitor(:unpopped_task) {}
+      Chore::Store.get_chore(:unpopped_task).should_not be_nil
+    end
+
+    it "manual pop should work" do
+      Chore.start(:manual_pop)
+      Chore::Store.get_chore(:manual_pop).should_not be_nil
+
+      Chore.pop(:manual_pop)
+      Chore::Store.get_chore(:manual_pop).should be_nil
+    end
+    
+    it "shouldn't remove expired task before it's time" do
+      Chore.start(:expire_later, :expire_in => Time.now.to_i + 12345678)
+      Chore::Store.expire()
+      Chore::Store.get_chore(:expire_later).should_not be_nil
+    end
+
+    it "should remove expired task when expired" do
+      Chore.start(:expire_yesterday, :expire_in => 1, :start_time => Time.now.to_i - 12345678)
+      Chore::Store.get_chore(:expire_yesterday).should_not be_nil
+      Chore::Store.expire()
+      Chore::Store.get_chore(:expire_yesterday).should be_nil
+    end
+  end
+
+  context "monitor" do
+    it "should record exception" do
+      begin
+        Chore.monitor(:AAAAAAAAA) do
+          raise "AAAAAAA"
+        end
+      rescue Exception => ex
+      end
+
+      failed_chore = Chore::Store.get_chore(:AAAAAAAAA)
+      failed_chore[:state].should == :red
+      failed_chore[:status].should == :fail
+    end
+
+    it "should record finish" do
+      Chore.monitor(:finish_cleanly) {}
+      finished_chore = Chore::Store.get_chore(:finish_cleanly)
+      finished_chore[:state].should == :green
+      finished_chore[:status].should == :finish
+    end
+    
+  end
 end
