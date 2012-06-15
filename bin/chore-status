@@ -14,9 +14,6 @@ end
 server = opts[:host]
 port = opts[:port]
 
-server = ARGV[0] if ARGV[0]
-port = ARGV[1].to_i if ARGV[1]
-
 begin
   sock = TCPSocket.open(server,port)
   sock.puts ".\r\n"

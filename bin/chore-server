@@ -19,10 +19,6 @@ listen_port = opts[:listen_port]
 cli_port = opts[:cli_port]
 web_port = opts[:web_port]
 
-listen_port = ARGV[0].to_i if ARGV[0]
-cli_port = ARGV[1].to_i if ARGV[1]
-web_port = ARGV[2].to_i if ARGV[2]
-
 EventMachine::run do
   EventMachine::PeriodicTimer.new(60) { Chore::Store.expire }
   EventMachine::open_datagram_socket('0.0.0.0', listen_port, ChoreCollect)
