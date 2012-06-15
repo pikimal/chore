@@ -49,6 +49,7 @@ module Chore
 
     # get status of a single chore
     def self.get_chore chore_name
+      chore_name = chore_name.to_s
       build_status(chore_name, Store.get[chore_name])
     end
 
