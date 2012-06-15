@@ -1,8 +1,0 @@
-Here's what I need for the first proper release to rubygems.
-After that, I'll start using github issues.
-
-* Use proper command line option parsing library.
-
-* Create CLI client that doesn't require spinning up IRB.
-
-* Proper tests instead of chore-client-test
