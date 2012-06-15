@@ -8,7 +8,6 @@ Gem::Specification.new do |s|
   s.email = "grant@pikimal.com"
   s.files = ['lib/chore.rb', 'lib/chore/server.rb','lib/chore/time_help.rb', 'lib/chore/store.rb', 'lib/chore/constants.rb']
   s.executables << 'chore-server'
-  s.executables << 'chore-client-test'
   s.executables << 'chore-status'
   s.add_dependency('eventmachine','>= 0.2.10')
   s.add_dependency('eventmachine_httpserver', '>= 0.2.1')
