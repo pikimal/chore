@@ -2,9 +2,17 @@
 
 require 'socket'
 require 'chore/constants'
+require 'trollop'
 
-server = 'localhost'
-port = Chore::Constants::DEFAULT_CLI_PORT
+opts = Trollop::options do
+  banner "chore-status"
+
+  opt :host, "host name of chore-server", :default => 'localhost'
+  opt :port, "port of chore-server", :default => Chore::Constants::DEFAULT_CLI_PORT
+end
+
+server = opts[:host]
+port = opts[:port]
 
 server = ARGV[0] if ARGV[0]
 port = ARGV[1].to_i if ARGV[1]

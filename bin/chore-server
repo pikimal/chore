@@ -3,12 +3,21 @@
 require 'chore'
 require 'chore/server'
 require 'chore/constants'
+require 'trollop'
+
+opts = Trollop::options do
+  banner "chore-server"
+
+  opt :listen_port, "Port to listen for client status submissions", :default => Chore::Constants::DEFAULT_LISTEN_PORT
+  opt :cli_port, "Port for chore-status requests", :default => Chore::Constants::DEFAULT_CLI_PORT
+  opt :web_port, "Port for web status server", :default => Chore::Constants::DEFAULT_WEB_PORT
+end
 
 
 # TODO: Real command line options instead of this
-listen_port = Chore::Constants::DEFAULT_LISTEN_PORT
-cli_port = Chore::Constants::DEFAULT_CLI_PORT
-web_port = Chore::Constants::DEFAULT_WEB_PORT
+listen_port = opts[:listen_port]
+cli_port = opts[:cli_port]
+web_port = opts[:web_port]
 
 listen_port = ARGV[0].to_i if ARGV[0]
 cli_port = ARGV[1].to_i if ARGV[1]
