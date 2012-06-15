@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'chore'
+require 'chore/constants'
+require 'trollop'
+
+opts = Trollop::options do
+  banner "chore-client"
+
+  opt :host, "host name of chore-server", :default => 'localhost'
+  opt :port, "port of chore-server", :default => Chore::Constants::DEFAULT_LISTEN_PORT
+
+  opt :chore, "name of chore", :type => :string
+  opt :action, "action (start, finish, status, fail, etc)", :type => :string
+end
+
+Trollop::die :chore, "chore name required" if !opts[:chore]
+Trollop::die :action, "action required" if !opts[:action]
+
+server = opts[:host]
+port = opts[:port]
+
+Chore.set_server(server, port)
+
+Chore.public_method(opts[:action]).call(opts[:chore])
