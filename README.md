@@ -127,3 +127,15 @@ end
 Chore.monitor("Cron task with pid #{process_id}", :expire_in => 1.day) {}
 
 ```
+
+There is also a command-line tool so you can use the server without
+having to fire up irb.
+
+```
+johnmudhead:chore grant$ chore-status
+test - failed 2012-06-15 17:33:00 -0400 (AAAAAAAAA)
+johnmudhead:chore grant$ chore-client --chore test --action pop
+johnmudhead:chore grant$ chore-status
+
+johnmudhead:chore grant$ 
+```
