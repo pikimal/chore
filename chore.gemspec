@@ -14,4 +14,5 @@ Gem::Specification.new do |s|
   s.add_dependency('eventmachine','>= 0.2.10')
   s.add_dependency('eventmachine_httpserver', '>= 0.2.1')
   s.add_dependency('trollop', ">= 1.16.2")
+  s.add_development_dependency("rspec")
 end
