@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = 'chore'
-  s.version = '0.0.0'
-  s.date = '2012-06-10'
+  s.version = '0.2.0'
+  s.date = '2012-06-15'
   s.summary = "Monitor chores"
   s.description = "Monitor chorse"
   s.authors = ["Pikimal, LLC"]
