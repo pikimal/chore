@@ -2,8 +2,8 @@ Gem::Specification.new do |s|
   s.name = 'chore'
   s.version = '0.2.1.pre'
   s.date = '???'
-  s.summary = "Monitor chores"
-  s.description = "Monitor chorse"
+  s.summary = "Monitor recurring chores"
+  s.description = "System health tool for everyone"
   s.authors = ["Pikimal, LLC"]
   s.homepage = "http://github.com/pikimal/chore"
   s.email = "grant@pikimal.com"
