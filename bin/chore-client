@@ -12,6 +12,13 @@ opts = Trollop::options do
 
   opt :chore, "name of chore", :type => :string
   opt :action, "action (start, finish, status, fail, etc)", :type => :string
+
+  opt :do_every, "interval that chore is expected to run in seconds", :type => :integer
+  opt :grace_period, "grace_period above and beyond do_every", :type => :integer
+  opt :finish_in, "seconds in which a healthy job should finish", :type => :integer
+  opt :expire_in, "seconds until chore is automatically removed from the queue", :type => :integer
+
+  opt :error, "Error message to use in conjunction with 'fail' action", :type => :string
 end
 
 Trollop::die :chore, "chore name required" if !opts[:chore]
@@ -22,4 +29,22 @@ port = opts[:port]
 
 Chore.set_server(server, port)
 
-Chore.public_method(opts[:action]).call(opts[:chore])
+
+chore = opts[:chore]
+action = opts[:action]
+chore_opts = {}
+
+add_if_exists = lambda do |x|
+  chore_opts[x] = opts[x] if opts[x]
+end
+
+if action == "start"
+  add_if_exists.call(:do_every)
+  add_if_exists.call(:grace_period)
+  add_if_exists.call(:finish_in)
+  add_if_exists.call(:expire_in)
+elsif action == "fail"
+  add_if_exists.call(:error)
+end
+
+Chore.public_method(action).call(chore, chore_opts)
