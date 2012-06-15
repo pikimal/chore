@@ -50,7 +50,11 @@ module Chore
     # get status of a single chore
     def self.get_chore chore_name
       chore_name = chore_name.to_s
-      build_status(chore_name, Store.get[chore_name])
+      chore_data = Store.get[chore_name]
+
+      return nil if chore_data.nil?
+      
+      build_status(chore_name, chore_data)
     end
 
     # Climb through the internal store and return a processed and
