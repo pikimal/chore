@@ -34,7 +34,7 @@ module Chore
   # [:expire_in]    Remove the task after X seconds.  This may be useful
   #                 to keep the task list clean.
   def self.start task, opts={}
-    opts[:start_time] = Time.now().to_i
+    opts[:start_time] ||= Time.now().to_i
     send( [:start, task, opts] )
   end
 
@@ -46,7 +46,7 @@ module Chore
 
   # Manually indicate that a task has finished
   def self.finish task, opts={}
-    opts[:finish_time] = Time.now().to_i
+    opts[:finish_time] ||= Time.now().to_i
     send( [:finish, task, opts] )
   end
   
@@ -59,7 +59,7 @@ module Chore
   #
   # [:error] optional error message
   def self.fail task, opts={}
-    opts[:fail_time] = Time.now().to_i
+    opts[:fail_time] ||= Time.now().to_i
     send( [:fail, task, opts] )
   end
   
