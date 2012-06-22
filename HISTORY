@@ -1,0 +1,12 @@
+**** 0.2.1 - June 22, 2012 ****
+
+* CLI interface now has a --refresh option, which gives top-style
+  updates.
+
+* Web interface now auto-refreshes every 60 seconds.
+
+* CLI interface now supports all client options.
+
+**** 0.2.0 - June 15, 2012 ****
+
+Initial public release.
