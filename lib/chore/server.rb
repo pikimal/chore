@@ -70,9 +70,11 @@ body {font-family:monospace;background-color:#CCCCCC;}
 .green {color:green;}
 table, th, td { border: 1px solid black;}
 </style>
+<meta http-equiv="refresh" content="60">
 </head>
 <body>
 <h1>Chores</h1>
+<p>Last updated #{Time.now}</p>
 <table>
 <tr><th>Job</th><th>Status</th><th>Time</th><th>Notes</th></tr>
 html
