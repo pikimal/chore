@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'chore'
-  s.version = '0.2.1.pre'
+  s.version = '0.2.1'
   s.date = Time.now
   s.summary = "Monitor recurring chores"
   s.description = "System health tool for everyone"
