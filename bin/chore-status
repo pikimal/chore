@@ -9,12 +9,13 @@ opts = Trollop::options do
 
   opt :host, "host name of chore-server", :default => 'localhost'
   opt :port, "port of chore-server", :default => Chore::Constants::DEFAULT_CLI_PORT
+  opt :refresh, "auto-refresh every 60 seconds"
 end
 
 server = opts[:host]
 port = opts[:port]
 
-begin
+def get_and_print server, port
   sock = TCPSocket.open(server,port)
   sock.puts ".\r\n"
 
@@ -25,4 +26,16 @@ begin
   sock.close
 rescue Errno::ECONNREFUSED, Errno::ETIMEDOUT => ex
   puts "Couldn't connect to chore-server at #{server}:#{port}"
+end
+
+if opts[:refresh]
+  while 1
+    print "\e[2J\e[f"
+    puts "chore-status - last updated #{Time.now}"
+    puts
+    get_and_print(server,port)
+    sleep(60)
+  end
+else
+  get_and_print(server,port)
 end
