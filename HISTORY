@@ -1,3 +1,9 @@
+**** 0.2.2 - July 3, 2012 ****
+
+* Chore.send now truncates unusually large messages that are too big
+  for UDP, and the server will fail gracefully if receiving such a message
+  fron and out of date client.
+
 **** 0.2.1 - June 22, 2012 ****
 
 * CLI interface now has a --refresh option, which gives top-style

@@ -6,7 +6,7 @@ describe Chore::Store do
   before :each do
     # Fake out the network code and submit directly to store
     Chore.stub(:send) do |args|
-      json = args.to_json
+      json = Chore.sanitize(args)
       and_back = JSON::parse(json)
       Chore::Store.update_chore(and_back)
     end

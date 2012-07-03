@@ -105,6 +105,17 @@ private
 
   #only allow good options
   def self.sanitize msg
+    # excessively large messages are too big for a UDP packet
+    opts = msg[2]
+    opts.keys.each do |key|
+      next if !opts[key].is_a? String
+
+      if opts[key].length > 1024
+        puts "FIXING"
+        opts[key] = opts[key][0..1020] + "..."
+      end
+    end
+    
     msg.to_json
   end
 end

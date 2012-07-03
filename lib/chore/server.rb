@@ -18,6 +18,9 @@ module ChoreCollect
   def receive_data(data)
     chore_info = JSON.parse(data)
     chore_collect chore_info
+  rescue JSON::ParserError => ex
+    warn "Ignoring invalid json, it probalby got truncated"
+    warn data
   end
 end
 
