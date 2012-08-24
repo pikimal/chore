@@ -2,6 +2,7 @@ require 'eventmachine'
 require 'evma_httpserver'
 require 'chore/store'
 require 'json'
+require 'erb'
 
 # Process submissions from a client and save it in the store.
 module ChoreCollect
@@ -62,39 +63,9 @@ class ChoreWeb < EventMachine::Connection
 
   def process_http_request
     resp = EventMachine::DelegatedHttpResponse.new(self)
-
-    html = <<-html
-<html>
-<head>
-<style type="text/css">
-body {font-family:monospace;background-color:#CCCCCC;}
-.red {color:red;}
-.yellow {color:yellow;}
-.green {color:green;}
-table, th, td { border: 1px solid black;}
-</style>
-<meta http-equiv="refresh" content="60">
-</head>
-<body>
-<h1>Chores</h1>
-<p>Last updated #{Time.now}</p>
-<table>
-<tr><th>Job</th><th>Status</th><th>Time</th><th>Notes</th></tr>
-html
-
-    Chore::Store.iterate_statuses do |status|
-      row = "<tr class='#{status[:state]}'><td>#{status[:job]}</td><td>#{status[:status]}ed</td><td>#{Time.at(status[:start_time])}</td>"
-      if !status[:notes].empty?
-        row += "<td>(#{status[:notes].join(', ')})</td>"
-      else
-        row += "<td>&nbsp;</td>"
-      end
-      
-      row += "</tr>\n"
-      html << row 
-    end
-
-    html << "</body></html>"
+    filepath = File.dirname(__FILE__) + '/../../views/status.rhtml' 
+    markup = File.open(filepath).read
+    html = ERB.new(markup).result
 
     resp.status = 200
     resp.content = html
