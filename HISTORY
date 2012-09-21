@@ -3,6 +3,8 @@
 * Always display text indicating that a job hasn't been running on
   schedule, even if it has failed for other reasons.
 
+* Config files so travis-ci will run.
+
 **** 0.2.2 - July 3, 2012 ****
 
 * Chore.send now truncates unusually large messages that are too big
