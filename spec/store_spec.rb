@@ -30,6 +30,20 @@ describe Chore::Store do
       chore[:job].should == "grace_period_chore"
       chore[:notes].should include "Job should run every 1 second, but has a grace period of 40 minutes"
     end
+
+    it "should notify when exceeding do_every, even if we specified a grace_period" do
+      Chore.start(:do_every_and_grace_period, :do_every => 1, :grace_period => 2, :start_time => Time.now().to_i - 100)
+      chore = Chore::Store.get_chore :do_every_and_grace_period
+      chore[:notes].last.should include("but hasn't run since")
+    end
+    
+    it "should notify when exceeding do_every interval, even if we we failed" do
+      Chore.start(:do_every_and_fail, :do_every => 1, :start_time => Time.now().to_i - 100)
+      Chore.fail(:do_every_and_fail)
+      chore = Chore::Store.get_chore :do_every_and_fail
+      chore[:notes].should include("FAILED!!!")
+      chore[:notes].last.should include("but hasn't run since")
+    end
     
     it "should print human understandible deadlines" do
       Chore.start(:crazy_time_chore, :do_every => 12345678)
