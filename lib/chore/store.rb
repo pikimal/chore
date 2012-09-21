@@ -106,20 +106,7 @@ module Chore
             notes << "Finished, but #{finish_time - (run_time + finish_in)} seconds late!!!"
           end
         elsif status == :start || status == :status_update
-          if do_every
-            if run_time + do_every >= current_time
-              state = :green
-              notes << "Should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}"
-            elsif grace_period && run_time + do_every + grace_period > current_time
-              state = :yellow
-              notes << "Job should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}, but has a grace period of #{Chore::TimeHelp.elapsed_human_time(grace_period)}"
-            else
-              state = :red
-              notes << "Job should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}, but hasn't run since #{Time.at(run_time)}"
-            end
-          else
-            state = :green
-          end
+          state = :green
 
           if status_info['expire_in']
             expire_in = Time.at(status_info['start_time'] + status_info['expire_in'].to_i)
@@ -128,6 +115,18 @@ module Chore
 
           notes << "Status: #{status_info['status_note']}" if status_info['status_note']
         end
+
+    if do_every
+      if run_time + do_every >= current_time
+        state = :green
+        notes << "Should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}"
+      elsif grace_period && run_time + do_every + grace_period > current_time
+        state = :yellow
+        notes << "Job should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}, but has a grace period of #{Chore::TimeHelp.elapsed_human_time(grace_period)}"
+      else
+        state = :red
+        notes << "Job should run every #{Chore::TimeHelp.elapsed_human_time(do_every)}, but hasn't run since #{Time.at(run_time)}"
+      end
         
         info = {:job => chore_name, :state => state, :status => status, :start_time => run_time, :notes => notes}
     end
