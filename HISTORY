@@ -1,4 +1,4 @@
-**** 0.2.3.pre - September 20, 2012 ****
+**** 0.2.3 - September 20, 2012 ****
 
 * Always display text indicating that a job hasn't been running on
   schedule, even if it has failed for other reasons.
