@@ -1,3 +1,5 @@
+**** 0.2.4 - March 28, 2013 ****
+
 * Don't use past tense in status so we don't see 'updateed'.
 
 * Show first line of traceback when .monitor catches a failure.
