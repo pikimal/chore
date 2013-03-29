@@ -1,3 +1,7 @@
+* Don't use past tense in status so we don't see 'updateed'.
+
+* Show first line of traceback when .monitor catches a failure.
+
 **** 0.2.3 - September 20, 2012 ****
 
 * Always display text indicating that a job hasn't been running on

@@ -88,7 +88,12 @@ module Chore
         Chore.finish(task)
       end
     rescue Exception => ex
-      Chore.fail(task, :error => "#{ex.class} - #{ex.message}")
+      msg = [ex.class, ex.message]
+      msg <<  ([''] + ex.backtrace[0..4]) if ex.backtrace.length > 0
+      msg << "..." if ex.backtrace.length > 5
+      msg = msg.join("\n")
+
+      Chore.fail(task, :error => "#{msg}")
       raise
     end
   end

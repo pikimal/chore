@@ -41,7 +41,7 @@ module ChoreDisplay
 
       status_lines = []
       Chore::Store.iterate_statuses do |status|
-        status_line = "#{status[:job]} - #{status[:status]}ed #{Time.at(status[:start_time])}"
+        status_line = "#{status[:job]} - #{status[:status]} #{Time.at(status[:start_time])}"
         status_line += " (#{status[:notes].join(', ')})" if !status[:notes].empty?
         status_lines << colorize(status_line, status[:state])
       end

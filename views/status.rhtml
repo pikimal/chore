@@ -30,7 +30,9 @@
           <td><%= Time.at(status[:start_time]) %></td>
           <td>
             <% if !status[:notes].empty? %>
-              <%= status[:notes].join(', ') %> 
+	    <pre>
+              <%= status[:notes].join(', ') %>
+            </pre>
             <% else %>
               &nbsp; 
             <% end %>
